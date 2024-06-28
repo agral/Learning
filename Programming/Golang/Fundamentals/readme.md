@@ -11,4 +11,8 @@ interactive udemy course, by Stephen Grider.
 * 05_Maps: maps' basics: declaring and passing maps around
 * 06_Interfaces: basics of interfaces in Go
     * assignment: `triangle` and `square` structs sharing common `shape` interface
+    * hard_assignment: use interfaces from `io` module to write a quine
+        * note: for the quine to work, this program must be compiled first (`go build main.go`),
+        then executed as `./main main.go`. For convenience, a plain text file
+        has been used during development.
 
