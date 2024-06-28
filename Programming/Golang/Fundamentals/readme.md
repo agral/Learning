@@ -9,3 +9,4 @@ interactive udemy course, by Stephen Grider.
 * 03_ControlBlocks: if-else blocks, number ranges
 * 04_Structs: structs, passing instances via pointers
 * 05_Maps: maps' basics: declaring and passing maps around
+* 06_Interfaces: basics of interfaces in Go
