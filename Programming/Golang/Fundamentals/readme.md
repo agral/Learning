@@ -15,4 +15,4 @@ interactive udemy course, by Stephen Grider.
         * note: for the quine to work, this program must be compiled first (`go build main.go`),
         then executed as `./main main.go`. For convenience, a plain text file
         has been used during development.
-
+* 07_Http: basics of net/http module. Fetching internet pages.
