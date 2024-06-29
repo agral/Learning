@@ -16,3 +16,6 @@ interactive udemy course, by Stephen Grider.
         then executed as `./main main.go`. For convenience, a plain text file
         has been used during development.
 * 07_Http: basics of net/http module. Fetching internet pages.
+* 08_Channels: basics of go's channels feature.
+    * a go program that checks whether sites from a list are up/down
+    * `chan` data type, `go func`s, etc.
