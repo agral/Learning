@@ -6,10 +6,19 @@ import (
 
 const help = `pomodoro - run an interactive pomodoro session in a terminal
 
-	options: TBD
+    Runs a 25 minute timer designated for working, then a 5 minute timer designated for resting.
 
-	author: (c) 2024 https://gralin.ski
-	license: MIT`
+    Usage:
+        pomodoro
+
+    Mandatory arguments:
+        none
+
+    Optional arguments:
+        none
+
+    author: (c) 2024 https://gralin.ski
+    license: MIT`
 
 func print_help() {
 	fmt.Println(help)
