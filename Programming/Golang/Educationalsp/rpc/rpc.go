@@ -1,10 +1,16 @@
 package rpc
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strconv"
 )
+
+type BaseMessage struct {
+	Method string `json:"method"`
+}
 
 func EncodeMessage(msg any) string {
 	content, err := json.Marshal(msg)
@@ -15,5 +21,22 @@ func EncodeMessage(msg any) string {
 }
 
 func DecodeMessage(msg []byte) (string, int, error) {
-	return "", 0, errors.New("Not implemented yet")
+	header, content, separatorFound := bytes.Cut(msg, []byte{'\r', '\n', '\r', '\n'})
+	if !separatorFound {
+		return "", 0, errors.New("Message did not contain mandatory \\r\\n\\r\\n separator")
+	}
+
+	// Parse Content-Length: <number>
+	contentLengthBytes := header[len("Content-Length: "):]
+	contentLengthValue, err := strconv.Atoi(string(contentLengthBytes))
+	if err != nil {
+		return "", 0, err
+	}
+
+	var baseMessage BaseMessage
+	err = json.Unmarshal(content[:contentLengthValue], &baseMessage)
+	if err != nil {
+		return "", 0, err
+	}
+	return baseMessage.Method, contentLengthValue, nil
 }
