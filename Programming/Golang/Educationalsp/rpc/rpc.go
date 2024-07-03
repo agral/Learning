@@ -40,3 +40,27 @@ func DecodeMessage(msg []byte) (string, []byte, error) {
 
 	return baseMessage.Method, content[:contentLengthValue], nil
 }
+
+// type SplitFunc func(data []byte, atEOF bool) (advance int, token []byte, err error)
+func Split(data []byte, _ bool) (advance int, token []byte, err error) {
+	header, content, separatorFound := bytes.Cut(data, []byte{'\r', '\n', '\r', '\n'})
+	if !separatorFound {
+		return 0, nil, nil // note: no error - this is fine, the LSP is just waiting for more data.
+	}
+
+	// Parse Content-Length: <number>
+	contentLengthBytes := header[len("Content-Length: "):]
+	contentLengthValue, err := strconv.Atoi(string(contentLengthBytes))
+	if err != nil {
+		return 0, nil, err
+	}
+
+	if len(content) < contentLengthValue {
+		// The declared number of bytes have not yet arrived from source. That's okay, no error.
+		return 0, nil, nil
+	}
+
+	totalLength := len(header) + 4 + contentLengthValue
+
+	return totalLength, data[:totalLength], nil
+}
