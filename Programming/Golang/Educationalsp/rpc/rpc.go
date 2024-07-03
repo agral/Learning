@@ -20,22 +20,23 @@ func EncodeMessage(msg any) string {
 	return fmt.Sprintf("Content-Length: %d\r\n\r\n%s", len(content), content)
 }
 
-func DecodeMessage(msg []byte) (string, int, error) {
+func DecodeMessage(msg []byte) (string, []byte, error) {
 	header, content, separatorFound := bytes.Cut(msg, []byte{'\r', '\n', '\r', '\n'})
 	if !separatorFound {
-		return "", 0, errors.New("Message did not contain mandatory \\r\\n\\r\\n separator")
+		return "", nil, errors.New("Message did not contain mandatory \\r\\n\\r\\n separator")
 	}
 
 	// Parse Content-Length: <number>
 	contentLengthBytes := header[len("Content-Length: "):]
 	contentLengthValue, err := strconv.Atoi(string(contentLengthBytes))
 	if err != nil {
-		return "", 0, err
+		return "", nil, err
 	}
 
 	var baseMessage BaseMessage
 	if err := json.Unmarshal(content[:contentLengthValue], &baseMessage); err != nil {
-		return "", 0, err
+		return "", nil, err
 	}
-	return baseMessage.Method, contentLengthValue, nil
+
+	return baseMessage.Method, content[:contentLengthValue], nil
 }
