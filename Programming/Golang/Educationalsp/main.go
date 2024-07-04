@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"educationalsp/analysis"
 	"educationalsp/lsp"
 	"educationalsp/rpc"
 	"encoding/json"
@@ -12,6 +13,9 @@ import (
 func main() {
 	logger := getLogger("/tmp/educationalsp.txt")
 	logger.Println("Educationalsp is starting")
+
+	state := analysis.NewState()
+
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Split(rpc.Split)
 
@@ -22,11 +26,11 @@ func main() {
 			logger.Printf("Error: %s", err)
 			continue
 		}
-		handleMessage(logger, method, contents)
+		handleMessage(logger, state, method, contents)
 	}
 }
 
-func handleMessage(logger *log.Logger, method string, contents []byte) {
+func handleMessage(logger *log.Logger, state analysis.State, method string, contents []byte) {
 	logger.Printf("Received message with method: %s", method)
 
 	switch method {
@@ -46,6 +50,16 @@ func handleMessage(logger *log.Logger, method string, contents []byte) {
 		writer.Write([]byte(reply))
 
 		logger.Print("Sent the reply")
+
+	case "textDocument/didOpen":
+		var request lsp.DidOpenTextDocumentNotification
+		if err := json.Unmarshal(contents, &request); err != nil {
+			logger.Printf("Error: Could not parse this: %s", err)
+		}
+		logger.Printf("Opened: %s %s",
+			request.Params.TextDocument.Uri,
+			request.Params.TextDocument.Text)
+		state.OpenDocument(request.Params.TextDocument.Uri, request.Params.TextDocument.Text)
 	}
 }
 
