@@ -9,3 +9,12 @@ type TextDocumentItem struct {
 	Version int    `json:"version"`
 	Text    string `json:"text"`
 }
+
+type TextDocumentIdentifier struct {
+	Uri string `json:"uri"`
+}
+
+type VersionedTextDocumentIdentifier struct {
+	TextDocumentIdentifier
+	Version int `json:"version"`
+}
