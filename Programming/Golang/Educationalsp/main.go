@@ -2,7 +2,9 @@ package main
 
 import (
 	"bufio"
+	"educationalsp/lsp"
 	"educationalsp/rpc"
+	"encoding/json"
 	"log"
 	"os"
 )
@@ -26,6 +28,17 @@ func main() {
 
 func handleMessage(logger *log.Logger, method string, contents []byte) {
 	logger.Printf("Received message with method: %s", method)
+
+	switch method {
+	case "initialize":
+		var request lsp.InitializeRequest
+		if err := json.Unmarshal(contents, &request); err != nil {
+			logger.Printf("Error: Could not parse this: %s", err)
+		}
+		logger.Printf("Connected to: %s %s",
+			request.Params.ClientInfo.Name,
+			request.Params.ClientInfo.Version)
+	}
 }
 
 func getLogger(filename string) *log.Logger {
