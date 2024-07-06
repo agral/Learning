@@ -36,3 +36,28 @@ func (s *State) Hover(id int, uri string, position lsp.Position) lsp.HoverRespon
 		},
 	}
 }
+
+func (s *State) Definition(id int, uri string, position lsp.Position) lsp.DefinitionResponse {
+	// An actual implementation would look up the definition. This implementation tells the user
+	// that the type is defined exactly one line above.
+
+	return lsp.DefinitionResponse{
+		Response: lsp.Response{
+			RPC: "2.0",
+			ID:  &id,
+		},
+		Result: lsp.Location{
+			Uri: uri,
+			Range: lsp.Range{
+				Start: lsp.Position{
+					Line:      position.Line - 1,
+					Character: 0,
+				},
+				End: lsp.Position{
+					Line:      position.Line - 1,
+					Character: 0,
+				},
+			},
+		},
+	}
+}
