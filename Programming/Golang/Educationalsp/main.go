@@ -6,6 +6,7 @@ import (
 	"educationalsp/lsp"
 	"educationalsp/rpc"
 	"encoding/json"
+	"io"
 	"log"
 	"os"
 )
@@ -15,6 +16,7 @@ func main() {
 	logger.Println("Educationalsp is starting")
 
 	state := analysis.NewState()
+	writer := os.Stdout
 
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Split(rpc.Split)
@@ -26,11 +28,11 @@ func main() {
 			logger.Printf("Error: %s", err)
 			continue
 		}
-		handleMessage(logger, state, method, contents)
+		handleMessage(logger, writer, state, method, contents)
 	}
 }
 
-func handleMessage(logger *log.Logger, state analysis.State, method string, contents []byte) {
+func handleMessage(logger *log.Logger, writer io.Writer, state analysis.State, method string, contents []byte) {
 	logger.Printf("Received message with method: %s", method)
 
 	switch method {
@@ -44,10 +46,7 @@ func handleMessage(logger *log.Logger, state analysis.State, method string, cont
 			request.Params.ClientInfo.Version)
 
 		msg := lsp.NewInitializeResponse(request.ID)
-		reply := rpc.EncodeMessage(msg)
-
-		writer := os.Stdout
-		writer.Write([]byte(reply))
+		writeResponse(writer, msg)
 
 		logger.Print("Sent the reply")
 
@@ -70,7 +69,22 @@ func handleMessage(logger *log.Logger, state analysis.State, method string, cont
 		for _, change := range request.Params.ContentChanges {
 			state.UpdateDocument(request.Params.TextDocument.Uri, change.Text)
 		}
+
+	case "textDocument/hover":
+		var request lsp.HoverRequest
+		if err := json.Unmarshal(contents, &request); err != nil {
+			logger.Printf("Error in textDocument/hover: %s", err)
+			return
+		}
+
+		response := state.Hover(request.ID, request.Params.TextDocument.Uri, request.Params.Position)
+		writeResponse(writer, response)
 	}
+}
+
+func writeResponse(writer io.Writer, msg any) {
+	reply := rpc.EncodeMessage(msg)
+	writer.Write([]byte(reply))
 }
 
 func getLogger(filename string) *log.Logger {
