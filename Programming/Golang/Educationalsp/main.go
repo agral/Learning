@@ -76,7 +76,6 @@ func handleMessage(logger *log.Logger, writer io.Writer, state analysis.State, m
 			logger.Printf("Error in textDocument/hover: %s", err)
 			return
 		}
-
 		response := state.Hover(request.ID, request.Params.TextDocument.Uri, request.Params.Position)
 		writeResponse(writer, response)
 
@@ -86,10 +85,17 @@ func handleMessage(logger *log.Logger, writer io.Writer, state analysis.State, m
 			logger.Printf("Error in textDocument/definition: %s", err)
 			return
 		}
-
 		response := state.Definition(request.ID, request.Params.TextDocument.Uri, request.Params.Position)
 		writeResponse(writer, response)
 
+	case "textDocument/codeAction":
+		var request lsp.CodeActionRequest
+		if err := json.Unmarshal(contents, &request); err != nil {
+			logger.Printf("Error in textDocument/codeAction: %s", err)
+			return
+		}
+		response := state.TextDocumentCodeAction(request.ID, request.Params.TextDocument.Uri)
+		writeResponse(writer, response)
 	}
 }
 

@@ -3,6 +3,7 @@ package analysis
 import (
 	"educationalsp/lsp"
 	"fmt"
+	"strings"
 )
 
 type State struct {
@@ -58,6 +59,63 @@ func (s *State) Definition(id int, uri string, position lsp.Position) lsp.Defini
 					Character: 0,
 				},
 			},
+		},
+	}
+}
+
+func (s *State) TextDocumentCodeAction(id int, uri string) lsp.TextDocumentCodeActionResponse {
+	text := s.Documents[uri]
+	actions := []lsp.CodeAction{}
+	const badWord = "VS Code"
+	for row, line := range strings.Split(text, "\n") {
+		badWordIndex := strings.Index(line, badWord)
+		if badWordIndex >= 0 {
+			fixByReplacing := map[string][]lsp.TextEdit{}
+			fixByReplacing[uri] = []lsp.TextEdit{
+				{
+					Range:   LineRange(row, badWordIndex, badWordIndex+len(badWord)),
+					NewText: "Emacs",
+				},
+			}
+			actions = append(actions, lsp.CodeAction{
+				Title: "Replace VS C*de with a superior editor",
+				Edit:  &lsp.WorkspaceEdit{Changes: fixByReplacing},
+			})
+
+			fixByCensoring := map[string][]lsp.TextEdit{}
+			fixByCensoring[uri] = []lsp.TextEdit{
+				{
+					Range:   LineRange(row, badWordIndex, badWordIndex+len(badWord)),
+					NewText: "VS C*de",
+				},
+			}
+			actions = append(actions, lsp.CodeAction{
+				Title: "Censor to VS C*de",
+				Edit:  &lsp.WorkspaceEdit{Changes: fixByCensoring},
+			})
+		}
+	}
+
+	response := lsp.TextDocumentCodeActionResponse{
+		Response: lsp.Response{
+			RPC: "2.0",
+			ID:  &id,
+		},
+		Result: actions,
+	}
+
+	return response
+}
+
+func LineRange(line, start, end int) lsp.Range {
+	return lsp.Range{
+		Start: lsp.Position{
+			Line:      line,
+			Character: start,
+		},
+		End: lsp.Position{
+			Line:      line,
+			Character: end,
 		},
 	}
 }
