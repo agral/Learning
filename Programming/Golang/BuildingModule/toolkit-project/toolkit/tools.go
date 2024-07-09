@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -152,4 +153,19 @@ func (t *Tools) CreateDirIfNotExist(path string) error {
 		}
 	}
 	return nil
+}
+
+// Creates a web-safe slug from a given string
+func (t *Tools) Slugify(s string) (string, error) {
+	if s == "" {
+		return "", errors.New("Empty string not permitted")
+	}
+
+	var re = regexp.MustCompile(`[^a-z\d]+`)
+	slug := strings.Trim(re.ReplaceAllString(strings.ToLower(s), "-"), "-")
+	if len(slug) == 0 {
+		return "", errors.New("After removing disallowed characters, slug is empty")
+	}
+
+	return slug, nil
 }
