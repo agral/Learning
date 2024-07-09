@@ -150,3 +150,22 @@ func TestTools_UploadOneFile(t *testing.T) {
 	// clean up: remove the uploaded file
 	_ = os.Remove(uploadedFilename)
 }
+
+func TestTools_CreateDirIfNotExist(t *testing.T) {
+	var testTool Tools
+	const testedDirPath = "./test_data/myDir"
+
+	// Test that it is possible to create a directory that hopefully does not yet exist:
+	err := testTool.CreateDirIfNotExist(testedDirPath)
+	if err != nil {
+		t.Error(err)
+	}
+	// Test that creating an already existing directory results in a success too:
+	err = testTool.CreateDirIfNotExist(testedDirPath)
+	if err != nil {
+		t.Error(err)
+	}
+
+	// Clean up:
+	_ = os.Remove(testedDirPath)
+}
