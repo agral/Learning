@@ -26,9 +26,9 @@ var uploadTests = []struct {
 	renameFile    bool
 	errorExpected bool
 }{
-	{
-		name: "allowed no rename", allowedTypes: []string{"image/jpeg", "image/png"}, renameFile: false, errorExpected: false,
-	},
+	{name: "allowed no rename", allowedTypes: []string{"image/jpeg", "image/png"}, renameFile: false, errorExpected: false},
+	{name: "allowed rename", allowedTypes: []string{"image/jpeg", "image/png"}, renameFile: true, errorExpected: false},
+	{name: "upload not allowed filetype", allowedTypes: []string{"image/jpeg"}, renameFile: false, errorExpected: true},
 }
 
 func TestTools_UploadFiles(t *testing.T) {
@@ -98,4 +98,55 @@ func TestTools_UploadFiles(t *testing.T) {
 
 		waitGroup.Wait()
 	}
+}
+
+func TestTools_UploadOneFile(t *testing.T) {
+	// sets up a pipe to avoid buffering
+	pipeReader, pipeWriter := io.Pipe()
+	writer := multipart.NewWriter(pipeWriter)
+
+	go func() {
+		defer writer.Close()
+
+		// Create a form data field "file":
+		part, err := writer.CreateFormFile("file", "./test_data/trioptimum.png")
+		if err != nil {
+			t.Error(err)
+		}
+
+		f, err := os.Open("./test_data/trioptimum.png")
+		if err != nil {
+			t.Error(err)
+		}
+		defer f.Close()
+
+		img, _, err := image.Decode(f)
+		if err != nil {
+			t.Error("Error decoding image", err)
+		}
+
+		err = png.Encode(part, img)
+		if err != nil {
+			t.Error(err)
+		}
+	}()
+
+	// read from the pipe receiving the data:
+	request := httptest.NewRequest("POST", "/", pipeReader)
+	request.Header.Add("Content-Type", writer.FormDataContentType())
+
+	var testTools Tools
+
+	uploadedFiles, err := testTools.UploadOneFile(request, "./test_data/uploads", true)
+	if err != nil {
+		t.Error(err)
+	}
+
+	uploadedFilename := fmt.Sprintf("./test_data/uploads/%s", uploadedFiles.NewFileName)
+	if _, err := os.Stat(uploadedFilename); os.IsNotExist(err) {
+		t.Errorf("Expected file to exist: %s", err.Error())
+	}
+
+	// clean up: remove the uploaded file
+	_ = os.Remove(uploadedFilename)
 }
