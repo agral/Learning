@@ -8,7 +8,7 @@ The module provides the following utilities:
 - [ ] Write JSON
 - [ ] Generate a JSON-encoded error response
 - [x] Upload a file to a preset directory
-- [ ] Download a static file
+- [x] Download a static file
 - [x] Get a random string of requested length
 - [ ] Post a JSON payload to a remote service
 - [x] Create a directory, including all parent directories
