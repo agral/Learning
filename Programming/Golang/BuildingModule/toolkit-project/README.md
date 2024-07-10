@@ -12,7 +12,7 @@ The module provides the following utilities:
 - [x] Get a random string of requested length
 - [ ] Post a JSON payload to a remote service
 - [x] Create a directory, including all parent directories
-- [ ] Create a URL-safe slug from a string
+- [x] Create a URL-safe slug from a string
 
 Based on "Building a module in Go (Golang)" course by Trevor Sawler:
 [https://www.udemy.com/course/building-a-module-in-go-golang/](https://www.udemy.com/course/building-a-module-in-go-golang/)
