@@ -1,6 +1,7 @@
 package toolkit
 
 import (
+	"bytes"
 	"fmt"
 	"image"
 	"image/png"
@@ -222,5 +223,43 @@ func TestTools_DownloadStaticFile(t *testing.T) {
 
 	if _, err := io.ReadAll(io.Reader(result.Body)); err != nil {
 		t.Error(err)
+	}
+}
+
+var jsonTests = []struct {
+	name          string
+	json          string
+	errorExpected bool
+	maxSize       int
+	allowUnknown  bool
+}{
+	{name: "Valid JSON", json: `{"foo": "bar"}`, errorExpected: false, maxSize: 1024, allowUnknown: false},
+}
+
+func TestTools_ReadJson(t *testing.T) {
+	var testTools Tools
+	for _, e := range jsonTests {
+		testTools.MaxJsonSize = e.maxSize
+		testTools.AllowUnknownFields = e.allowUnknown
+
+		// The JSON will be read into this variable:
+		var decodedJson struct {
+			Foo string `json:"foo"`
+		}
+		req, err := http.NewRequest("POST", "/", bytes.NewReader([]byte(e.json)))
+		if err != nil {
+			t.Log("Error:", err)
+		}
+
+		rr := httptest.NewRecorder()
+		err = testTools.ReadJson(rr, req, &decodedJson)
+		if e.errorExpected && err == nil {
+			t.Errorf("%s: error expected, none received", e.name)
+		}
+		if !e.errorExpected && err != nil {
+			t.Errorf("%s: unexpected error %s", e.name, err.Error())
+		}
+
+		req.Body.Close()
 	}
 }
