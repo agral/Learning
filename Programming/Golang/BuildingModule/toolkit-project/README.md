@@ -4,13 +4,13 @@ I'm learning Golang here by writing a reusable Go module.
 
 The module provides the following utilities:
 
-- [ ] Read JSON
-- [ ] Write JSON
-- [ ] Generate a JSON-encoded error response
+- [x] Read JSON
+- [x] Write JSON
+- [x] Generate a JSON-encoded error response
 - [x] Upload a file to a preset directory
 - [x] Download a static file
 - [x] Get a random string of requested length
-- [ ] Post a JSON payload to a remote service
+- [x] Post a JSON payload to a remote service
 - [x] Create a directory, including all parent directories
 - [x] Create a URL-safe slug from a string
 
