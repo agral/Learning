@@ -21,6 +21,7 @@ func main() {
 	mux.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir("."))))
 	mux.HandleFunc("/receive-post", receivePost)
 	mux.HandleFunc("/remote-service", remoteService)
+	mux.HandleFunc("/simulated-service", simulatedService)
 
 	log.Println("Starting the server...")
 
@@ -49,4 +50,34 @@ func receivePost(w http.ResponseWriter, r *http.Request) {
 }
 
 func remoteService(w http.ResponseWriter, r *http.Request) {
+	var requestPayload RequestPayload
+	var t toolkit.Tools
+	err := t.ReadJson(w, r, &requestPayload)
+	if err != nil {
+		t.ErrorJson(w, err)
+		return
+	}
+
+	_, statusCode, err := t.PushJsonToRemote("http://localhost:8081/simulated-service", requestPayload)
+	if err != nil {
+		t.ErrorJson(w, err)
+		return
+	}
+
+	responsePayload := ResponsePayload{
+		Message:    "The remote service handler works correctly",
+		StatusCode: statusCode,
+	}
+	err = t.WriteJson(w, http.StatusAccepted, responsePayload)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func simulatedService(w http.ResponseWriter, r *http.Request) {
+	var t toolkit.Tools
+	payload := ResponsePayload{
+		Message: "ok",
+	}
+	_ = t.WriteJson(w, http.StatusOK, payload)
 }
