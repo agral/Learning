@@ -26,6 +26,10 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+type WebSocketConnection struct {
+	*websocket.Conn
+}
+
 // The response sent back from a websocket
 type WsJsonResponse struct {
 	Action      string `json:"action"`
@@ -33,6 +37,14 @@ type WsJsonResponse struct {
 	MessageType string `json:"message_type"`
 }
 
+type WsPayload struct {
+	Action   string              `json:"action"`
+	Username string              `json:"username"`
+	Message  string              `json:"message"`
+	Conn     WebSocketConnection `json:"-"`
+}
+
+// Upgrades the connection to websocket
 func WsEndpoint(w http.ResponseWriter, r *http.Request) {
 	ws, err := connectionUpgrader.Upgrade(w, r, nil)
 	if err != nil {
