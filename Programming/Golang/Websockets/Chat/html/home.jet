@@ -44,6 +44,7 @@
                 </div>
                 <div class="col-md-4">
                     <h3>Who's Online</h3>
+                    <ul id="online_users"></ul>
                 </div>
             </div>
         </div>
@@ -63,9 +64,34 @@
                 console.log("There was an error")
             }
             socket.onmessage = msg => {
-                let j = JSON.parse(msg.data)
-                console.log(j)
+                let data = JSON.parse(msg.data)
+                console.log("Action is", data.action)
+                switch(data.action) {
+                    case "list_users":
+                        let ulist = document.getElementById("online_users")
+                        while (ulist.firstChild) {
+                            ulist.removeChild(ulist.firstChild)
+                        }
+
+                        console.log(data.connected_users)
+                        if (data.connected_users.length > 0) {
+                            data.connected_users.forEach(function(item) {
+                                let li = document.createElement("li");
+                                li.appendChild(document.createTextNode(item))
+                                ulist.appendChild(li)
+                            })
+                        }
+                        break;
+                }
             }
+
+            let userInput = document.getElementById("username")
+            userInput.addEventListener("change", function() {
+                let jsonData = {}
+                jsonData["action"] = "username"
+                jsonData["username"] = this.value
+                socket.send(JSON.stringify(jsonData))
+            })
         })
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
