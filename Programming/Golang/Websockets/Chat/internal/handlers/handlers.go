@@ -115,8 +115,9 @@ func ListenToWsChannel() {
 func getUserList() []string {
 	var userList []string
 	for _, username := range clients {
-		log.Printf("Connected client: %s", username)
-		userList = append(userList, username)
+		if username != "" {
+			userList = append(userList, username)
+		}
 	}
 	sort.Strings(userList)
 	return userList
