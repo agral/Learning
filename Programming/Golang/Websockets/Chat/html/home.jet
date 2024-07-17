@@ -53,6 +53,9 @@
 
     <script>
         let socket = null
+        const o = document.getElementById("output")
+        const userField = document.getElementById("username")
+        const messageField = document.getElementById("message")
 
         window.onbeforeunload = function() {
             console.log("Leaving")
@@ -91,6 +94,9 @@
                             })
                         }
                         break;
+
+                    case "broadcast":
+                        o.innerHTML = o.innerHTML + data.message + "<br>"
                 }
             }
 
@@ -110,8 +116,23 @@
                     }
                     event.preventDefault()
                     event.stopPropagation()
+
+                    if ((userField.value === "") || (messageField.value === "")) {
+                        alert("Please fill out user and message fields")
+                        return false;
+                    }
                     sendMessage()
+                    return true
                 }
+            })
+
+            document.getElementById("sendBtn").addEventListener("click", function() {
+                if ((userField.value === "") || (messageField.value === "")) {
+                    alert("Please fill out user and message fields")
+                    return false;
+                }
+                sendMessage()
+                return true
             })
         })
 
