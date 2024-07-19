@@ -120,7 +120,7 @@
                     event.stopPropagation()
 
                     if ((userField.value === "") || (messageField.value === "")) {
-                        alert("Please fill out user and message fields")
+                        showErrorAlert("Please fill out user and message fields")
                         return false;
                     }
                     sendMessage()
@@ -130,7 +130,7 @@
 
             document.getElementById("sendBtn").addEventListener("click", function() {
                 if ((userField.value === "") || (messageField.value === "")) {
-                    alert("Please fill out user and message fields")
+                    showErrorAlert("Please fill out user and message fields")
                     return false;
                 }
                 sendMessage()
