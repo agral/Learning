@@ -38,12 +38,15 @@
                         <label for="message">Message:</label>
                         <input type="text" name="message" id="message" class="form-control" autocomplete="off">
                     </div>
-                    <input type="hidden" name="action" id="action">
 
                     <hr/>
                     <a href="javascript:void(0);" id="sendBtn" class="btn btn-outline-secondary">Send Message</a>
+                    <input type="hidden" name="action" id="action">
 
-                    <div id="output" class="chatbox">
+                    <div id="status" class="mt-2 float-end">
+                    </div>
+
+                    <div id="output" class="chatbox mt-3">
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -72,14 +75,20 @@
                 debug: true, // TODO: switch to false when moving to production
                 reconnectInterval: 3000
             })
+            const offline = `<span class="badge bg-danger">Not connected</span>`
+            const online = `<span class="badge bg-success">Connected</span>`
+            let statusDiv = document.getElementById("status")
             socket.onopen = () => {
                 console.log("Successfully connected to a websocket")
+                statusDiv.innerHTML = online;
             }
             socket.onclose = () => {
                 console.log("Socket connection closed")
+                statusDiv.innerHTML = offline;
             }
             socket.onerror = error => {
                 console.log("There was an error")
+                statusDiv.innerHTML = offline;
             }
             socket.onmessage = msg => {
                 let data = JSON.parse(msg.data)
