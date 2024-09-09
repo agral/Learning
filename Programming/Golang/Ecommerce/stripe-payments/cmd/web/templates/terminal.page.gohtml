@@ -45,7 +45,7 @@
     <a id="pay-button" href="javascript:void(0)" class="btn btn-primary" onclick="validate()">Charge Card</a>
     <div id="processing-payment" class="text-center d-none">
         <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidder">Loading...</span>
+            <span class="visually-hidden">Loading...</span>
         </div>
     </div>
 </form>
@@ -61,6 +61,11 @@ const cardMessages = document.getElementById("card-messages")
 const payButton = document.getElementById("pay-button")
 const processing = document.getElementById("processing-payment")
 
+function hidePayButton() {
+    payButton.classList.add("d-none")
+    processing.classList.remove("d-none")
+}
+
 function validate() {
     let form = document.getElementById("charge_form")
     if (form.checkValidity() === false) {
@@ -70,6 +75,7 @@ function validate() {
         return
     }
     form.classList.add("was-validated");
+    hidePayButton()
 }
 
 (() => {
