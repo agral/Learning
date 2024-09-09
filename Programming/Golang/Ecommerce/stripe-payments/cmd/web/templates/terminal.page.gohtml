@@ -48,7 +48,42 @@
 {{define "js"}}
 <script src="https://js.stripe.com/v3/"></script>
 <script>
+let card
+
+//TODO: provide stripe api key
+let stripe = Stripe("key")
+
 function val() {
 }
+
+(() => {
+    const elements = stripe.elements()
+    const style = {
+        base: {
+            fontSize: '16px',
+            lineHeight: '24px',
+        }
+    }
+
+    // Create card entry:
+    card = elements.create("card", {
+        style: style,
+        hidePostalCode: true,
+    })
+    card.mount("#card-element")
+
+    // Check for input errors:
+    card.addEventListener("change", (event) => {
+        let displayError = document.getElementById("card-errors")
+        if (event.error) {
+            displayError.classList.remove("d-none")
+            displayError.textContent = event.error.message
+        }
+        else {
+            displayError.classList.add("d-none")
+            displayError.textContent = ""
+        }
+    })
+})()
 </script>
 {{end}}
