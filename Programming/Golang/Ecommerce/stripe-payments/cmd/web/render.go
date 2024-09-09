@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -20,6 +21,7 @@ type templateData struct {
 	IsAuthenticated int
 	API             string
 	CssVersion      string
+	StripeApiKey    string
 }
 
 var functions = template.FuncMap{}
@@ -30,6 +32,14 @@ var functions = template.FuncMap{}
 var templateFS embed.FS
 
 func (app *application) addDefaultData(td *templateData, r *http.Request) *templateData {
+	// Read Stripe's API key from env variable.
+	// This key is not provided directly, as it's a secret
+	// that should not be exposed in the codebase.
+	td.StripeApiKey = os.Getenv("STRIPE_API_TEST_KEY")
+	if td.StripeApiKey == "" {
+		app.errorLog.Println("Missing required environment variable: STRIPE_API_TEST_KEY")
+		app.errorLog.Println("Stripe content will not be available")
+	}
 	return td
 }
 

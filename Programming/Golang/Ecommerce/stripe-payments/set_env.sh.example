@@ -1,0 +1,5 @@
+# Note: Perform all the actions marked ACTION below, then rename this file to set_env.sh
+# Note: this file should be sourced (`$ source ./set_env.sh`) before starting the server.
+
+# ACTION: Put your test (dev) Stripe API key here:
+export STRIPE_API_TEST_KEY=""
