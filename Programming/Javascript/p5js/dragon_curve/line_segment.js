@@ -30,7 +30,7 @@ class LineSegment {
     }
 
     update() {
-        this.angle += 0.1;
+        this.angle += rotationSpeed;
         if (this.angle >= 0.5 * PI) {
             this.angle = 0.5 * PI;
             this.isDone = true;

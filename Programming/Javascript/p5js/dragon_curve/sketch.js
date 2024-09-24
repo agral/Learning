@@ -1,22 +1,25 @@
 let segments = [];
 let endSegment;
+let rotationSpeed = 0.06;
 
 function mousePressed() {
-    let newSegments = [];
-    for (let s of segments) {
-        let origin = (segments.length == 1 ? endSegment.end : endSegment.start)
-        let newSegment = s.duplicate(origin);
-        newSegments.push(newSegment);
+    if (endSegment.isDone) {
+        let newSegments = [];
+        for (let s of segments) {
+            let origin = (segments.length == 1 ? endSegment.end : endSegment.start)
+            let newSegment = s.duplicate(origin);
+            newSegments.push(newSegment);
+        }
+        segments = segments.concat(newSegments);
+        endSegment = newSegments[0];
     }
-    segments = segments.concat(newSegments);
-    endSegment = newSegments[0];
 }
 
 function setup() {
     let canvas = {"w": 800, "h": 600};
     createCanvas(canvas.w, canvas.h);
-    let start = createVector(0.5 * canvas.w, 0.55 * canvas.h);
-    let end = createVector(0.5 * canvas.w, 0.45 * canvas.h);
+    let start = createVector(0.5 * canvas.w, 0.51 * canvas.h);
+    let end = createVector(0.5 * canvas.w, 0.49 * canvas.h);
     endSegment = new LineSegment(start, end, end);
     endSegment.isDone = true;
     segments.push(endSegment);
