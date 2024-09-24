@@ -1,6 +1,5 @@
 let segments = [];
 let endSegment;
-let endpoint;
 
 function mousePressed() {
     let newSegments = [];
@@ -40,7 +39,8 @@ function drawDebugInfo() {
     // Draw the global endpoint:
     strokeWeight(0);
     textSize(10);
-    text("E", endSegment.end.x + 2, endSegment.end.y + 8);
+    let currentEndpoint = segments.length == 1 ? endSegment.end : endSegment.start;
+    text("E", currentEndpoint.x + 2, currentEndpoint.y + 8);
 
     // Draw the statistics - number of line segments:
     text(`segments: ${segments.length}`, 10, 10);
