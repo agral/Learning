@@ -2,11 +2,13 @@ let segments = [];
 let endpoint;
 
 function mousePressed() {
-    let endpoint = segments[segments.length - 1].start;
-    let s = segments[0];
-    let newS = s.rotate(s.end);
-    segments.push(newS);
-    // todo: update the endpoint...?
+    let newSegments = [];
+    for (const s of segments) {
+        let newSegment = s.rotate(endpoint);
+        newSegments.push(newSegment);
+    }
+    segments = segments.concat(newSegments);
+    endpoint = newSegments[0].start;
 }
 
 function setup() {
@@ -29,4 +31,7 @@ function draw() {
     strokeWeight(0);
     textSize(10);
     text("E", endpoint.x + 2, endpoint.y + 8);
+
+    // Draw the statistics - number of line segments:
+    text(`segments: ${segments.length}`, 10, 10);
 }
