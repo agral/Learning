@@ -1,10 +1,16 @@
+let segments = [];
+
 function setup() {
     createCanvas(800, 600);
+    let start = createVector(200, 250);
+    let end = createVector(200, 150);
+    let segment = new LineSegment(start, end);
+    segments.push(segment);
 }
 
 function draw() {
-    //let a = p5.Vector(100, 100);
-    //let b = p5.Vector(300, 300);
     background(220);
-    point(240, 320);
+    for (const s of segments) {
+        s.draw();
+    }
 }
