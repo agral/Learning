@@ -12,9 +12,10 @@ function mousePressed() {
 }
 
 function setup() {
-    createCanvas(800, 600);
-    let start = createVector(200, 250);
-    let end = createVector(200, 150);
+    let canvas = {"w": 800, "h": 600};
+    createCanvas(canvas.w, canvas.h);
+    let start = createVector(0.5 * canvas.w, 0.51 * canvas.h);
+    let end = createVector(0.5 * canvas.w, 0.49 * canvas.h);
     let segment = new LineSegment(start, end);
     endpoint = end;
     segments.push(segment);
