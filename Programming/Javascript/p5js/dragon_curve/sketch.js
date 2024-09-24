@@ -26,8 +26,12 @@ function draw() {
     background(220);
     for (const s of segments) {
         s.draw();
-        s.drawDebugInfo();
+        //s.drawDebugInfo();
     }
+    // drawDebugInfo();
+}
+
+function drawDebugInfo() {
     // Draw the global endpoint:
     strokeWeight(0);
     textSize(10);
