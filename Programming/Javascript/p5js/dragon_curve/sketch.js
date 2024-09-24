@@ -1,9 +1,10 @@
 let segments = [];
 let endSegment;
-let rotationSpeed = 0.06;
+let rotationSpeed = 0.07;
 
 function mousePressed() {
     if (endSegment.isDone) {
+        rotationSpeed *= 0.87;
         let newSegments = [];
         for (let s of segments) {
             let origin = (segments.length == 1 ? endSegment.end : endSegment.start)
