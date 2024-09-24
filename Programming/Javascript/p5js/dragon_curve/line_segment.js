@@ -13,8 +13,8 @@ class LineSegment {
     drawDebugInfo() {
         strokeWeight(0);
         textSize(8);
-        text("b", this.start.x, this.start.y);
-        text("e", this.end.x, this.end.y);
+        text("s", this.start.x + 2, this.start.y + 8);
+        text("e", this.end.x + 2, this.end.y + 8);
     }
 
     rotate(origin) {
