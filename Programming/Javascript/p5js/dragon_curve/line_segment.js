@@ -9,4 +9,22 @@ class LineSegment {
         strokeWeight(2);
         line(this.start.x, this.start.y, this.end.x, this.end.y);
     }
+
+    drawDebugInfo() {
+        strokeWeight(0);
+        textSize(8);
+        text("b", this.start.x, this.start.y);
+        text("e", this.end.x, this.end.y);
+    }
+
+    rotate(origin) {
+        let vs = p5.Vector.sub(this.start, origin);
+        let ve = p5.Vector.sub(this.end, origin);
+        vs.rotate(-0.5 * PI);
+        ve.rotate(-0.5 * PI);
+        let rotatedStart = p5.Vector.add(origin, vs);
+        let rotatedEnd = p5.Vector.add(origin, ve);
+        let newSegment = new LineSegment(rotatedStart, rotatedEnd);
+        return newSegment;
+    }
 }
