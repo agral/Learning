@@ -1,12 +1,13 @@
 FRONTEND_PORT=4000
 BACKEND_PORT=4001
 
-.PHONY: check_env clean build build_frontend build_backend start start_frontend start_backend stop stop_frontend stop_backend
+.PHONY: all check_env clean build build_frontend build_backend start start_frontend start_backend stop stop_frontend stop_backend
 
 # Note: makes check_env somewhat obsolete, but it can still be used
 # to quickly check that set_env.sh has been sourced.
 include set_env.sh
 
+all: stop start
 start: start_backend start_frontend
 build: check_env clean build_backend build_frontend
 stop: stop_frontend stop_backend
