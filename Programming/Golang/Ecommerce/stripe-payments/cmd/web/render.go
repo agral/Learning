@@ -10,18 +10,19 @@ import (
 )
 
 type templateData struct {
-	StringMap       map[string]string
-	IntMap          map[string]int
-	FloatMap        map[string]float32
-	Data            map[string]interface{}
-	CSRFToken       string
-	Flash           string
-	Warning         string
-	Error           string
-	IsAuthenticated int
-	API             string
-	CssVersion      string
-	StripeApiKey    string
+	StringMap          map[string]string
+	IntMap             map[string]int
+	FloatMap           map[string]float32
+	Data               map[string]interface{}
+	CSRFToken          string
+	Flash              string
+	Warning            string
+	Error              string
+	IsAuthenticated    int
+	API                string
+	CssVersion         string
+	StripeApiKey       string
+	StripeApiSecretKey string
 }
 
 var functions = template.FuncMap{}
@@ -35,9 +36,17 @@ func (app *application) addDefaultData(td *templateData, r *http.Request) *templ
 	// Read Stripe's API key from env variable.
 	// This key is not provided directly, as it's a secret
 	// that should not be exposed in the codebase.
-	td.StripeApiKey = os.Getenv("STRIPE_API_TEST_KEY")
+	td.StripeApiKey = os.Getenv("STRIPE_API_PUBLISHABLE_KEY")
 	if td.StripeApiKey == "" {
-		app.errorLog.Println("Missing required environment variable: STRIPE_API_TEST_KEY")
+		app.errorLog.Println("Missing required environment variable: STRIPE_API_PUBLISHABLE_KEY")
+		app.errorLog.Println("Stripe content will not be available")
+	}
+	// Read Stripe's API secret key from env variable.
+	// This key is not provided directly, as it's a secret
+	// that should not be exposed in the codebase.
+	td.StripeApiSecretKey = os.Getenv("STRIPE_API_SECRET_KEY")
+	if td.StripeApiSecretKey == "" {
+		app.errorLog.Println("Missing required environment variable: STRIPE_API_SECRET_KEY")
 		app.errorLog.Println("Stripe content will not be available")
 	}
 	return td

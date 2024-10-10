@@ -44,7 +44,10 @@ stop_backend:
 	@echo "Stopped the back end server."
 
 check_env:
-ifndef STRIPE_API_TEST_KEY
-$(error STRIPE_API_TEST_KEY is unset)
+ifndef STRIPE_API_PUBLISHABLE_KEY
+$(error STRIPE_API_PUBLISHABLE_KEY is unset)
+endif
+ifndef STRIPE_API_SECRET_KEY
+$(error STRIPE_API_SECRET_KEY is unset)
 endif
 	@echo "The required environment variables are set."
