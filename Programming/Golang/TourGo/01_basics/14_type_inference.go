@@ -25,5 +25,4 @@ func main() {
 	rune_val := rune(42)
 	fmt.Printf("rune_val is of type %T\n", rune_val)
 	fmt.Println("  (note: `rune` is just an alias for `int32`)")
-
 }
