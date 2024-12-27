@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"slices"
+)
 
 func main() {
 	// Array of three default-initialized elements:
@@ -42,4 +45,42 @@ func main() {
 
 	// The size of the array is part of the array type. So e.g. [3]int is different type than [4]int.
 	// This is why slices are much more common.
+
+	// Using [...] makes ar array; using [] makes a slice.
+
+	var a = []int{10, 20, 30}
+	fmt.Printf("\nSlice `var a []int{10, 20, 30}`: %v\n", a)
+	var b = []int{1, 5: 4, 6, 10: 100, 15}
+	fmt.Printf("Sparse slice `var b = []int{1, 5: 4, 6, 10: 100, 15}`: %v\n", b)
+
+	// Slices can be declared without a literal (it would be analogous to a declaration -
+	// as opposed to a definition - from C language). Such slice is zero-initialized to nil.
+	var c []int
+	fmt.Printf("Zero-initialized slice: `var c []int`: %v\n", c)
+	fmt.Printf("`c == nil`: %v\n", c == nil)
+
+	// Unlike arrays, slices can not be directly compared to each other.
+	// Slices can only be directly compared to nil. So the following line is illegal Go code:
+	//fmt.Printf("`a == b`: %v\n", a == b)
+
+	// Since Go 1.21 (released in 2024-08; almost 1.5 years ago), there's slices.Equal function
+	// to compare comparable slices; and slices.EqualFunc can be used to compare almost anything.
+	fmt.Printf("`slices.Equal(a, b)`: %v\n", slices.Equal(a, b))
+	fmt.Printf("`slices.Equal(a, a)`: %v\n", slices.Equal(a, a))
+	// this won't compile; int and string are not comparable:
+	//var d = []string{"Mary", "had", "a", "little", "lamb"}
+	//fmt.Printf("`slices.Equal(a, d)`: %v\n", slices.Equal(a, d))
+	// But such comparison can be done with slices.EqualFunc.
+
+	// The built-in append() function is used to grow slices:
+	a = append(a, 40)
+	fmt.Printf("\nafter `a=append(a, 40)`, slice a is now: %v\n", a)
+	// append() can add many values at once:
+	a = append(a, 50, 60, 70)
+	fmt.Printf("after `a=append(a, 50, 60, 70)`, slice a is now: %v\n", a)
+	// One slice can be appended onto the other by using the ... operator
+	// to expand the source slice into individual values.
+	d := []int{80, 90}
+	a = append(a, d...)
+	fmt.Printf("after `a=append(a, d...)`, slice a is now: %v\n", a)
 }
