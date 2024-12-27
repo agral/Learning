@@ -83,4 +83,20 @@ func main() {
 	d := []int{80, 90}
 	a = append(a, d...)
 	fmt.Printf("after `a=append(a, d...)`, slice a is now: %v\n", a)
+
+	// Built-in make() function can be used to declare a slice.
+	// Specifically, an empty slice that already has a given length or capacity.
+	e := make([]int, 5)
+	fmt.Printf("`e := make([]int, 5)`: %v, len: %d, cap: %d\n", e, len(e), cap(e))
+	f := make([]int, 5, 10)
+	fmt.Printf("`f := make([]int, 5, 10)`: %v, len: %d, cap: %d\n", f, len(f), cap(f))
+	g := make([]int, 0, 5)
+	fmt.Printf("`g := make([]int, 0, 5)`: %v, len: %d, cap: %d\n", g, len(g), cap(g))
+	// An interesting trivia: the empty slice with nonzero capacity is no longer nil:
+	fmt.Printf("`g == nil`: %v\n", g == nil)
+
+	// Capacity less than the length is either a compile-time error (constants) or a runtime panic.
+	//_ := make([]int, 5, 3)      // a compile-time error
+	//h := make([]int, a[2], a[1]) // panic: runtime error: makeslice: cap out of range
+	//fmt.Printf("%v\n", h)
 }
