@@ -99,4 +99,23 @@ func main() {
 	//_ := make([]int, 5, 3)      // a compile-time error
 	//h := make([]int, a[2], a[1]) // panic: runtime error: makeslice: cap out of range
 	//fmt.Printf("%v\n", h)
+
+	// A slice expression [starting offset:ending offset] creates a slice from a slice.
+	// It works similar to slices in Python, but:
+	// a) negative offsets are not allowed,
+	// b) a copy of the data is NOT being made. Instead the two variables are now pointing
+	//    to a shared memory!
+	orig := []string{"a", "b", "c", "d"}
+	fmt.Printf("Slice `orig` is %v\n", orig)
+	fmt.Printf("`orig[:2] is %v\n", orig[:2])
+	fmt.Printf("`orig[1:] is %v\n", orig[1:])
+	sl1 := orig[1:3]
+	fmt.Printf("`orig[1:3] is %v\n", sl1)
+	fmt.Printf("`orig[:] is %v\n", orig[:])
+
+	fmt.Printf("Modifying orig: `[0]=\"x\", [1]=\"y\", [2]=\"z\"\n")
+	orig[0] = "x"
+	orig[1] = "y"
+	orig[2] = "z"
+	fmt.Printf("After modification, previously remembered `sl1 := orig[1:3]` is now: %v\n", sl1)
 }
