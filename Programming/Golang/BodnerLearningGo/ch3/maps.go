@@ -53,6 +53,11 @@ func try_basic_usage() {
 	scores["Bob"]++
 	scores["Alice"] = 3
 	fmt.Println(scores)
+
+	// built-in delete() function is used to remove keys from a map.
+	delete(scores, "Bob")
+	fmt.Printf("After deleting \"Bob\", `scores`=%v\n", scores)
+
 }
 
 func comma_ok_idiom() {
