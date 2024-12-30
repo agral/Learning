@@ -45,7 +45,37 @@ func try_map_literals() {
 	//slice_as_key := map[[]int]bool{}
 }
 
+func try_basic_usage() {
+	scores := map[string]int{
+		"Alice": 1,
+		"Bob":   0,
+	}
+	scores["Bob"]++
+	scores["Alice"] = 3
+	fmt.Println(scores)
+}
+
+func comma_ok_idiom() {
+	m := map[string]int{
+		"hello":  1,
+		"world":  2,
+		"of":     3,
+		"Golang": 4,
+	}
+	// This is the comma ok idiom.
+	//  - v is initialized to either a value from the map, or a default zero value.
+	//  - ok is set to either true if given key exists in the map, or false otherwise.
+	v, ok := m["hello"]
+	fmt.Println(v, ok)
+	v, ok = m["world"]
+	fmt.Println(v, ok)
+	v, ok = m["OCaml"]
+	fmt.Println(v, ok)
+}
+
 func main() {
 	//try_nil_maps()
 	try_map_literals()
+	try_basic_usage()
+	comma_ok_idiom()
 }
