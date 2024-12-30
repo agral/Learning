@@ -93,9 +93,22 @@ func comma_ok_idiom() {
 	fmt.Println(v, ok)
 }
 
+func map_as_set() {
+	// Map can be used as a set in a pinch. This does not require third-party libraries,
+	// but on the other hand is somewhat limited with no union, intersection etc. functions.
+	vals := []int{3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5}
+	intSet := map[int]bool{}
+	for _, val := range vals {
+		intSet[val] = true
+	}
+	fmt.Printf("`len(vals)`=%d, `len(intSet)`=%d\n", len(vals), len(intSet))
+	fmt.Printf("`intSet[5]`=%v, `intSet[8]`=%v\n", intSet[5], intSet[8])
+}
+
 func main() {
 	//try_nil_maps()
 	try_map_literals()
 	try_basic_usage()
 	comma_ok_idiom()
+	map_as_set()
 }
