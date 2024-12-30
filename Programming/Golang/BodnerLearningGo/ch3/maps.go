@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"maps"
+)
 
 func try_nil_maps() {
 	// This is a nil map, with keys of type string and values of type int. It has a length of 0.
@@ -58,6 +61,18 @@ func try_basic_usage() {
 	delete(scores, "Bob")
 	fmt.Printf("After deleting \"Bob\", `scores`=%v\n", scores)
 
+	// From version 1.21 there's an Equal function that can be used to compare maps.
+	// There's also an option to use custom comparison functions with EqualFunc, similar to slices.
+	aliceMap := map[string]int{
+		"Alice": 3,
+	}
+	fmt.Printf("Comparison of scores with aliceMap: %v\n", maps.Equal(scores, aliceMap))
+	scores["Eve"] = 4
+	fmt.Printf("After adding Eve to scores, comparison with aliceMap: %v\n", maps.Equal(scores, aliceMap))
+
+	// Similar to slices, clear() function can be used to empty a map too.
+	clear(scores)
+	fmt.Printf("After `clear(scores)`, scores=%v\n", scores)
 }
 
 func comma_ok_idiom() {
