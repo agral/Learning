@@ -32,12 +32,25 @@ func fileLen(filename string) (int, error) {
 	return length, nil
 }
 
+func prefixer(prefix string) func(string) string {
+	var f = func(input string) string {
+		return fmt.Sprintf("%s %s", prefix, input)
+	}
+	return f
+}
+
 func ch5_ex2() {
 	// Write a function called fileLen that has an input parameter of type string and
 	// returns an int and an error. The function takes in a filename and returns the
 	// number of bytes in the file. If there is an error reading the file, return the error.
 	// Use defer to make sure the file is closed properly.
+}
 
+func ch5_ex3() {
+	// Write a function called prefixer that has an input parameter of type string
+	// and returns a function that has an input parameter of type string and returns a
+	// string. The returned function should prefix its input with the string passed into
+	// prefixer. Use the following main function to test prefixer: (...)
 }
 
 func main() {
@@ -50,4 +63,7 @@ func main() {
 	}
 	fmt.Printf("Length of %s is %d bytes.\n", os.Args[1], l)
 
+	helloPrefix := prefixer("Hello")
+	fmt.Println(helloPrefix("Bob"))
+	fmt.Println(helloPrefix("Maria"))
 }
