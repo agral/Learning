@@ -1,10 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 var msg string
 
-func updateMessage(s string) {
+func updateMessage(s string, wg *sync.WaitGroup) {
+	defer wg.Done()
 	msg = s
 }
 
@@ -18,13 +22,20 @@ func main() {
 	// runs properly and predictably, i.e. the output is always the same
 	// between runs (no race conditions).
 	// Then write a test for all three functions.
+	var wg sync.WaitGroup
 	msg = "Hello, world!"
-	updateMessage("Hello, universe!")
+	wg.Add(1)
+	go updateMessage("Hello, universe!", &wg)
+	wg.Wait()
 	printMessage()
 
-	updateMessage("Hello, cosmos!")
+	wg.Add(1)
+	go updateMessage("Hello, cosmos!", &wg)
+	wg.Wait()
 	printMessage()
 
-	updateMessage("Hello, world!")
+	wg.Add(1)
+	go updateMessage("Hello, world!", &wg)
+	wg.Wait()
 	printMessage()
 }
