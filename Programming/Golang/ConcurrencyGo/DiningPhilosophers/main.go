@@ -26,6 +26,9 @@ var eatTime = 1 * time.Second
 var thinkTime = 3 * time.Second
 var sleepTime = 1 * time.Second
 
+var finishedMutex sync.Mutex
+var finishedText []string
+
 func main() {
 	fmt.Println("Dining Philosophers Problem")
 	fmt.Println("---------------------------")
@@ -59,6 +62,10 @@ func dine() {
 	}
 
 	wg.Wait()
+
+	for _, name := range finishedText {
+		fmt.Println(name)
+	}
 }
 
 func diningProblem(philosopher Philosopher, wg *sync.WaitGroup,
@@ -98,5 +105,8 @@ func diningProblem(philosopher Philosopher, wg *sync.WaitGroup,
 		fmt.Printf("\t%s puts down the forks.\n", philosopher.name)
 	}
 	fmt.Println(philosopher.name, "is satisfied.")
+	finishedMutex.Lock()
+	finishedText = append(finishedText, philosopher.name)
+	finishedMutex.Unlock()
 	fmt.Println(philosopher.name, "left the table.")
 }
