@@ -40,9 +40,9 @@ func main() {
 }
 
 func dine() {
-	eatTime = 0 * time.Second
-	sleepTime = 0 * time.Second
-	thinkTime = 0 * time.Second
+	//eatTime = 0 * time.Second
+	//sleepTime = 0 * time.Second
+	//thinkTime = 0 * time.Second
 
 	wg := &sync.WaitGroup{}
 	wg.Add(len(philosophers))
