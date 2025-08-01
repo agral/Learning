@@ -1,6 +1,8 @@
+const canvas = {"w": 800, "h": 600};
 let segments = [];
 let endSegment;
 let rotationSpeed = 0.07;
+let zoom = 1.0;
 
 function mousePressed() {
     if (endSegment.isDone) {
@@ -17,10 +19,9 @@ function mousePressed() {
 }
 
 function setup() {
-    let canvas = {"w": 800, "h": 600};
     createCanvas(canvas.w, canvas.h);
-    let start = createVector(0.5 * canvas.w, 0.51 * canvas.h);
-    let end = createVector(0.5 * canvas.w, 0.49 * canvas.h);
+    let start = createVector(0, 0.05 * canvas.h);
+    let end = createVector(0, -0.05 * canvas.h);
     endSegment = new LineSegment(start, end, end);
     endSegment.isDone = true;
     segments.push(endSegment);
@@ -29,6 +30,9 @@ function setup() {
 
 function draw() {
     background(220);
+    translate(0.5 * canvas.w, 0.5 * canvas.h);
+    zoom *= 0.997;
+    scale(zoom);
     for (let s of segments) {
         if (!s.isDone) {
             s.update();
@@ -36,7 +40,7 @@ function draw() {
         s.draw();
         //s.drawDebugInfo();
     }
-    drawDebugInfo();
+    //drawDebugInfo();
 }
 
 function drawDebugInfo() {
