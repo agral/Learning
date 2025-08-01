@@ -1,6 +1,7 @@
 package render
 
 import (
+	"ModernWebApplications/pkg/config"
 	"bytes"
 	"fmt"
 	"html/template"
@@ -9,22 +10,22 @@ import (
 	"path/filepath"
 )
 
-var tc = make(map[string]*template.Template)
+var app *config.AppConfig
+
+func NewTemplates(a *config.AppConfig) {
+	app = a
+}
 
 func RenderTemplate(w http.ResponseWriter, tmpl string) {
-	// Create a template cache:
-	tc, err := CreateTemplateCache()
-	if err != nil {
-		log.Fatal(err)
-	}
+	tc := app.TemplateCache
 
 	// Get the requested template from cache
 	t, isOk := tc[tmpl]
 	if !isOk {
-		log.Fatal(err)
+		log.Fatal("Could not get the template from cache")
 	}
 	buf := new(bytes.Buffer)
-	err = t.Execute(buf, nil)
+	err := t.Execute(buf, nil)
 	if err != nil {
 		log.Println(err)
 	}

@@ -1,14 +1,26 @@
 package main
 
 import (
+	"ModernWebApplications/pkg/config"
 	"ModernWebApplications/pkg/handlers"
+	"ModernWebApplications/pkg/render"
 	"fmt"
+	"log"
 	"net/http"
 )
 
 const PORT_NUMBER = ":31337"
 
 func main() {
+	var app config.AppConfig
+	tc, err := render.CreateTemplateCache()
+	if err != nil {
+		log.Println("Could not create the template cache")
+		log.Fatal(err)
+	}
+	app.TemplateCache = tc
+	render.NewTemplates(&app)
+
 	http.HandleFunc("/", handlers.Home)
 	http.HandleFunc("/about", handlers.About)
 
