@@ -7,12 +7,22 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
+
+	"github.com/alexedwards/scs/v2"
 )
 
 const PORT_NUMBER = ":31337"
 
 func main() {
 	var app config.AppConfig
+
+	session := scs.New()
+	session.Lifetime = 24 * time.Hour
+	session.Cookie.Persist = true
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = false // good for debugging. but in production, this *has* to be set to true.
+
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Println("Could not create the template cache")
