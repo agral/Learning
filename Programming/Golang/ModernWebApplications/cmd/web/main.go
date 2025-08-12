@@ -14,14 +14,18 @@ import (
 
 const PORT_NUMBER = ":31337"
 
+var app config.AppConfig
+
 func main() {
-	var app config.AppConfig
+	// Change this to _true_ when in production.
+	app.IsProd = false
 
 	session := scs.New()
 	session.Lifetime = 24 * time.Hour
 	session.Cookie.Persist = true
 	session.Cookie.SameSite = http.SameSiteLaxMode
-	session.Cookie.Secure = false // good for debugging. but in production, this *has* to be set to true.
+	session.Cookie.Secure = app.IsProd
+	app.Session = session
 
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
