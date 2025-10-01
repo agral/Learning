@@ -9,6 +9,17 @@ body {
     flex-grow: 1;
 }
 
+.players {
+    display: flex;
+    gap: 5rem;
+}
+
+.player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 footer {
     display: flex;
     justify-content: center;
