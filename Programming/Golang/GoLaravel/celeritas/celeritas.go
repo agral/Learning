@@ -1,5 +1,13 @@
 package celeritas
 
-func TestFunc(a, b int) int {
+func AddTwoInts(a, b int) int {
 	return a + b
+}
+
+func SubTwoInts(a, b int) int {
+	return a - b
+}
+
+func MulTwoInts(a, b int) int {
+	return a * b
 }

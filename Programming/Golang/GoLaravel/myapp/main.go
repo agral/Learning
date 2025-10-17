@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
-	result := celeritas.TestFunc(1, 2)
+	result := celeritas.AddTwoInts(1, 2)
+	result = celeritas.MulTwoInts(4, 5)
 	fmt.Println(result)
 }
