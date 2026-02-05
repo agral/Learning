@@ -3,20 +3,25 @@ package main
 import "testing"
 
 func Test_isPrime(t *testing.T) {
-	result, msg := isPrime(0)
-	if result == true {
-		t.Errorf("With %d as test parameter, got `true`, but expected `false`", 0)
-	}
-	if msg != "0 is not prime by definition." {
-		t.Error("Wrong message returned:", msg)
-	}
-
-	result, msg = isPrime(13)
-	if result == false {
-		t.Errorf("With %d as test parameter, got `false`, but expected `true`", 13)
-	}
-	if msg != "13 is a prime number." {
-		t.Error("Wrong message returned:", msg)
+	primeTests := []struct {
+		name        string
+		testNum     int
+		expected    bool
+		expectedMsg string
+	}{
+		{"prime", 13, true, "13 is a prime number."},
+		{"not prime", 8, false, "8 is not a prime number - divisible by 2."},
 	}
 
+	for _, test := range primeTests {
+		result, msg := isPrime(test.testNum)
+		if test.expected && !result {
+			t.Errorf("%s: expected `true`, got `false`", test.name)
+		} else if !test.expected && result {
+			t.Errorf("%s: expected `false`, got `true`", test.name)
+		}
+		if test.expectedMsg != msg {
+			t.Errorf("%s: expected `%s`, got `%s`", test.name, test.expectedMsg, msg)
+		}
+	}
 }
