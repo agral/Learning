@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --clGray: #dbddde;
+    --clBlue: #268bd2;
+}
+
+#calendar {
+    display: grid;
+    height: 100%;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+}
+
+.day {
+    text-align: center;
+    min-height: 4rem;
+}
