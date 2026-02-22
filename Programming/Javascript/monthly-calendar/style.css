@@ -18,4 +18,13 @@ body {
 .day {
     text-align: center;
     min-height: 4rem;
+    border-right: 1px solid var(--clGray);
+    border-bottom: 1px solid var(--clGray);
+    padding-top: 0.3125rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.weekend {
+    color: var(--clBlue);
 }
