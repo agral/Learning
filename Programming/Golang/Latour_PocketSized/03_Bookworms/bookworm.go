@@ -1,6 +1,9 @@
 package main
 
-import "os"
+import (
+	"encoding/json"
+	"os"
+)
 
 type Book struct {
 	Author string `json:"author"`
@@ -19,5 +22,12 @@ func loadBookworms(filePath string) ([]Bookworm, error) {
 	}
 	defer f.Close()
 
-	return nil, nil
+	var bookworms []Bookworm
+
+	err = json.NewDecoder(f).Decode(&bookworms)
+	if err != nil {
+		return nil, err
+	}
+
+	return bookworms, nil
 }
