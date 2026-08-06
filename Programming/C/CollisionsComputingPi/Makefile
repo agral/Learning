@@ -1,2 +1,2 @@
 all:
-	gcc -o piblocks main.c
+	gcc -o piblocks main.c -lraylib
