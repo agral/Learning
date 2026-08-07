@@ -1,16 +1,35 @@
 #include <stdio.h>
 #include <raylib.h>
 
+const int WIDTH = 1024;
+const int HEIGHT = 768;
+
+typedef struct {
+    int size;
+    double posX;
+    double velX;
+    double mass;
+} Block;
+
 int main()
 {
     printf("Hello, world!\n");
-    InitWindow(1024, 768, "PiBlocks");
+    InitWindow(WIDTH, HEIGHT, "PiBlocks");
+
+    Block small = (Block){50, 0.3 * WIDTH, 0, 1};
+    Block big = (Block){200, 0.7 * WIDTH, -1, 10000};
 
     SetTargetFPS(60);
     while (!WindowShouldClose()) {
+        // Move the scene's objects:
+
         BeginDrawing();
         ClearBackground(BLACK);
-        DrawRectangle(50, 50, 200, 200, WHITE);
+
+        // Draw both blocks
+        DrawRectangle(small.posX, 0.7 * HEIGHT - small.size, small.size, small.size, WHITE);
+        DrawRectangle(big.posX, 0.7 * HEIGHT - big.size, big.size, big.size, WHITE);
+
         EndDrawing();
     }
 
