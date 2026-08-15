@@ -3,6 +3,7 @@
 
 const int WIDTH = 1024;
 const int HEIGHT = 768;
+const double FLOOR_LEVEL = 0.7 * HEIGHT;
 
 typedef struct {
     int size;
@@ -27,8 +28,8 @@ int main()
         ClearBackground(BLACK);
 
         // Draw both blocks
-        DrawRectangle(small.posX, 0.7 * HEIGHT - small.size, small.size, small.size, WHITE);
-        DrawRectangle(big.posX, 0.7 * HEIGHT - big.size, big.size, big.size, WHITE);
+        DrawRectangle(small.posX, FLOOR_LEVEL - small.size, small.size, small.size, WHITE);
+        DrawRectangle(big.posX, FLOOR_LEVEL - big.size, big.size, big.size, WHITE);
 
         EndDrawing();
     }
