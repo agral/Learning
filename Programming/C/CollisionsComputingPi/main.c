@@ -35,6 +35,14 @@ void update_scene(float deltaTime) {
 
     // the small block:
     small.posX += small.velX * deltaTime;
+
+    // Handle block-wall collisions:
+    if (big.posX <= WALL_X) {
+        big.velX = -big.velX;
+    }
+    if (small.posX <= WALL_X) {
+        small.velX = -small.velX;
+    }
 }
 
 int main()
