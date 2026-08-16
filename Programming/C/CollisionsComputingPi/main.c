@@ -14,7 +14,7 @@ typedef struct {
 } Block;
 
 Block small = (Block){50, 0.3 * WIDTH, 0, 1};
-Block big = (Block){200, 0.7 * WIDTH, -1, 10000};
+Block big = (Block){200, 0.7 * WIDTH, -100, 10000};
 
 
 void draw_scene() {
@@ -29,6 +29,14 @@ void draw_scene() {
     DrawRectangle(big.posX, FLOOR_LEVEL - big.size, big.size, big.size, WHITE);
 }
 
+void update_scene(float deltaTime) {
+    // the big block:
+    big.posX += big.velX * deltaTime;
+
+    // the small block:
+    small.posX += small.velX * deltaTime;
+}
+
 int main()
 {
     printf("Hello, world!\n");
@@ -41,6 +49,8 @@ int main()
         BeginDrawing();
         ClearBackground(BLACK);
 
+        float deltaTime = GetFrameTime();
+        update_scene(deltaTime);
         draw_scene();
 
         EndDrawing();
