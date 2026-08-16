@@ -70,7 +70,9 @@ int main()
         ClearBackground(BLACK);
 
         float deltaTime = GetFrameTime();
-        update_scene(deltaTime);
+        for (int i = 0; i < 10; i++) {
+            update_scene(deltaTime/10.0);
+        }
         draw_scene();
 
         EndDrawing();
