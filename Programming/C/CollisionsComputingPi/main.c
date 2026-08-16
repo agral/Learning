@@ -43,6 +43,18 @@ void update_scene(float deltaTime) {
     if (small.posX <= WALL_X) {
         small.velX = -small.velX;
     }
+
+    // Handle block-block collision:
+    // (is the right end of the small block colliding or to the right
+    // of the left side of the big block?)
+    if (small.posX + small.size >= big.posX) {
+        const double smallVx = small.velX;
+        const double bigVx = big.velX;
+        small.velX = (smallVx * (small.mass - big.mass) / (small.mass + big.mass)) +
+                     (bigVx * (2 * big.mass / (small.mass + big.mass))); 
+        big.velX = (smallVx * (2 * small.mass / (small.mass + big.mass))) +
+                   (bigVx * (big.mass - small.mass) / (small.mass + big.mass));
+    }
 }
 
 int main()
