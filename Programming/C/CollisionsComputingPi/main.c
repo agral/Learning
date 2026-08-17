@@ -38,9 +38,13 @@ void update_scene(float deltaTime) {
 
     // Handle block-wall collisions:
     if (big.posX <= WALL_X) {
+        // the big block won't ever collide with the wall, but let's have the wall bouncing both blocks.
         big.velX = -big.velX;
     }
     if (small.posX <= WALL_X) {
+        // realistically, only the small block collides with the wall. Make it precise:
+        // the block does not remain within the wall's bounds, it is moved just outside of it.
+        small.posX = WALL_X;
         small.velX = -small.velX;
     }
 
