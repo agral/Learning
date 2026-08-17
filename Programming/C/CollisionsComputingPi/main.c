@@ -37,11 +37,11 @@ void update_scene(float deltaTime) {
     small.posX += small.velX * deltaTime;
 
     // Handle block-wall collisions:
-    if (big.posX <= WALL_X) {
+    if (big.posX < WALL_X) {
         // the big block won't ever collide with the wall, but let's have the wall bouncing both blocks.
         big.velX = -big.velX;
     }
-    if (small.posX <= WALL_X) {
+    if (small.posX < WALL_X) {
         // realistically, only the small block collides with the wall. Make it precise:
         // the block does not remain within the wall's bounds, it is moved just outside of it.
         small.posX = WALL_X;
@@ -52,6 +52,20 @@ void update_scene(float deltaTime) {
     // (is the right end of the small block colliding or to the right
     // of the left side of the big block?)
     if (small.posX + small.size >= big.posX) {
+        // if so, update the positions. Put the block just to the left of the big right block,
+        // i.e. don't let them remain collided.
+        small.posX = big.posX - small.size;
+        // Note: this might have put the small block back into the wall. If that's so,
+        // put the small block to the right so that it just does not collide with the wall,
+        // and put the big block to the right too, so that they both don't collide:
+        if (small.posX < WALL_X) {
+            small.posX = WALL_X;
+            if (big.posX < small.posX + small.size) {
+                big.posX = small.posX + small.size;
+            }
+        }
+
+        // and finally update the velocities:
         const double smallVx = small.velX;
         const double bigVx = big.velX;
         small.velX = (smallVx * (small.mass - big.mass) / (small.mass + big.mass)) +
