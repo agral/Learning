@@ -6,5 +6,8 @@ replace github.com/agral/celeritas => ../celeritas
 
 require github.com/agral/celeritas v0.0.0-00010101000000-000000000000
 
-require github.com/joho/godotenv v1.5.1 // indirect
-
+require (
+	github.com/go-chi/chi v1.5.5 // indirect
+	github.com/go-chi/chi/v5 v5.2.3 // indirect
+	github.com/joho/godotenv v1.5.1 // indirect
+)
