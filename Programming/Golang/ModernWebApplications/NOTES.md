@@ -16,3 +16,8 @@ func Home(w http.ResponseWriter, r *http.Request) {
 }
 ```
 So it's pretty easy, just write any content to the writer, and it appears on the page.
+
+
+## Working with templates.
+To use templates, just import "html/template". Then there's `template.ParseFiles()`,
+and each of such parsed tempates can be `Execute()`d.
