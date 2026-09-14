@@ -21,3 +21,6 @@ So it's pretty easy, just write any content to the writer, and it appears on the
 ## Working with templates.
 To use templates, just import "html/template". Then there's `template.ParseFiles()`,
 and each of such parsed tempates can be `Execute()`d.
+
+Templates can use other templates. Variable blocks can be named as I wish: `{{block "NAME" .}} {{end}}`
+Then the blocks get actually filled in: `{{define "NAME"}} Actual content {{end}}`. Easy.
