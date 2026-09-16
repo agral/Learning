@@ -24,3 +24,7 @@ and each of such parsed tempates can be `Execute()`d.
 
 Templates can use other templates. Variable blocks can be named as I wish: `{{block "NAME" .}} {{end}}`
 Then the blocks get actually filled in: `{{define "NAME"}} Actual content {{end}}`. Easy.
+
+### Template caching
+Parsing and disk access might be expensive. Templates, once parsed, can be cached in memory.
+This usually significantly improves the performance.
