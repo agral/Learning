@@ -11,10 +11,8 @@ import (
 // Renders actual templates using html/template functionalities.
 func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	// Create a template cache
-	templateCache, err := createTemplateCache()
+	templateCache, err := CreateTemplateCache()
 	if err != nil {
-		// Instantiating all the templates has failed - just die at this point,
-		// it makes no sense to proceed.
 		log.Println("Failed to instantiate the template cache")
 		log.Fatal(err)
 	}
@@ -40,7 +38,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	}
 }
 
-func createTemplateCache() (map[string]*template.Template, error) {
+func CreateTemplateCache() (map[string]*template.Template, error) {
 	myCache := make(map[string]*template.Template)
 
 	// Get all files matching: ./templates/*.page.tmpl:
@@ -71,8 +69,6 @@ func createTemplateCache() (map[string]*template.Template, error) {
 		myCache[basename] = templateSet
 	}
 
-	log.Printf("Returning a cache: %v", myCache)
+	log.Printf("Created a template cache: %v", myCache)
 	return myCache, nil
 }
-
-var templateCache = make(map[string]*template.Template)
